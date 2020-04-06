@@ -43,8 +43,8 @@ public class User {
 
 	public User(String username, String password, String firstName, String lastName, String email) {
 		this.setEmail(email);
-		this.setfirstName(firstName);
-		this.setlastName(lastName);
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
 		this.setUsername(username);
 		this.setPassword(password);
 		this.setSuperUser(false);
@@ -52,11 +52,15 @@ public class User {
 
 	public User(String username, String password, String firstName, String lastName, String email, boolean superUser) {
 		this.setEmail(email);
-		this.setfirstName(firstName);
-		this.setlastName(lastName);
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
 		this.setSuperUser(superUser);
 		this.setUsername(username);
 		this.setPassword(password);
+	}
+	
+	public Long getId() {
+		return id;
 	}
 
 	public String getUsername() {
@@ -75,19 +79,19 @@ public class User {
 		this.password = password;
 	}
 
-	public String getfirstName() {
+	public String getFirstName() {
 		return firstName;
 	}
 
-	public void setfirstName(String firstName) {
+	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
-	public String getlastName() {
+	public String getLastName() {
 		return lastName;
 	}
 
-	public void setlastName(String lastName) {
+	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
@@ -109,7 +113,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return this.getUsername() + " " + this.getfirstName() + " " + this.getlastName() + " " + this.getEmail();
+		return this.getUsername() + " " + this.getFirstName() + " " + this.getLastName() + " " + this.getEmail();
 	}
 
 }
