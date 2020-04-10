@@ -17,23 +17,23 @@ public class HermesApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HermesApplication.class, args);
 	}
-	
+
 	@Bean
 	public CommandLineRunner hermesDemo(UserRepository uRepository) {
 		return (args) -> {
-			
+
 			// Adding predetermined Users
 			log.info("Adding Users");
 			User user1 = new User("admin", "admin", "Geoffrey", "Test", "tester@gmail.com", true);
-			User user2 = new User("user", "user", "Not Geoffrey", "Tester", "tester@gmail.com");			
+			User user2 = new User("user", "user", "Not Geoffrey", "Tester", "tester@gmail.com");
 			uRepository.save(user1);
 			uRepository.save(user2);
-			
+
 			log.info("added users");
-			for(User user : uRepository.findAll()) {
+			for (User user : uRepository.findAll()) {
 				log.info(user.toString());
 			}
-			
+
 		};
 	}
 

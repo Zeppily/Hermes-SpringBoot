@@ -3,6 +3,7 @@ package fi.geoffrey.hermes.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -37,6 +38,18 @@ public class UsersController {
 	public String saveUser(User user) {
 		uRepository.save(user);
 		return "redirect:userlist";
+	}
+	
+	@RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
+	public String deleteUser(@PathVariable("id") Long userId, Model model) {
+		uRepository.deleteById(userId);
+		return "redirect:../userlist";
+	}
+	
+	@RequestMapping(value="/editUser/{id}")
+	public String editUser(@PathVariable("id") Long userId, Model model) {
+		model.addAttribute("user", uRepository.findById(userId));
+		return "editUser";
 	}
 
 }

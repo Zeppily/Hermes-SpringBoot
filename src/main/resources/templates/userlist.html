@@ -20,7 +20,11 @@
 			<td th:text="${user.LastName}"></td>
 			<td th:text="${user.email}"></td>
 			<td th:text="${user.superUser}"></td>
+			<td><a th:href="@{/delete/{id}(id=${user.id})}" class="btn btn-danger">Delete</a></td>
+			<td><a th:href="@{/editUser/{id}(id=${user.id})}" class="btn btn-danger">Edit</a></td>  
 		</tr>
 	</table>
+	
+	
 </body>
 </html>
