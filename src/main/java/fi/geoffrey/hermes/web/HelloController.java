@@ -11,7 +11,7 @@ public class HelloController {
 	
 	@RequestMapping("/index")
 	public String home() {
-		return "hello welcome";
+		return "index";
 	}
 
 }

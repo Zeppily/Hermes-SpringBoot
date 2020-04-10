@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Registration</title>
+</head>
+<body>
+<h1>User Registration</h1>
+
+
+<div class="d-flex p-2 bd-highlight">
+<form th:object="${user}" th:action="@{saveUser}" action="#" method="post">
+<label for="title">Username</label>
+<input class="form-control" type="text" id="title" th:field="*{username}" />
+<label for="author">Password</label>
+<input class="form-control" type="text" id="author" th:field="*{password}" />
+<label for="isbn">First Name</label>
+<input class="form-control" type="text" id="isbn" th:field="*{firstName}" />
+<label for="year">Last Name</label>
+<input class="form-control" type="text" id="year" th:field="*{lastName}" />
+<label for="price">Email</label>
+<input class="form-control" type="text" id="price" th:field="*{email}" />
+
+
+<br />
+<input type="submit" value="Save" class="btn btn-danger" ></input>
+</form>
+</div>
+</body>
+</html>

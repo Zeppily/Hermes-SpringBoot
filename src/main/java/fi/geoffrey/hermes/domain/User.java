@@ -38,7 +38,7 @@ public class User {
 	private boolean superUser;
 
 	public User() {
-
+		this.setSuperUser(false);
 	}
 
 	public User(String username, String password, String firstName, String lastName, String email) {
