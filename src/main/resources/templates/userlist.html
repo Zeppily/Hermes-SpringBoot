@@ -4,7 +4,12 @@
 <meta charset="ISO-8859-1">
 <title>User List</title>
 </head>
-<body>   
+<body>
+	<h3 th:inline="text">Logged in as [[${#httpServletRequest.remoteUser}]]!</h3>
+	<form th:action="@{/logout}" method="post">
+		<input type="submit" value="Sign Out"/>
+	</form>
+	
 	<h1>Registered users</h1>
 	<table class="table table-striped">
 		<tr>
@@ -12,16 +17,16 @@
 			<th>First Name</th>
 			<th>Last Name</th>
 			<th>Email</th>
-			<th>Is Admin?</th>
+			<th>Role</th>
 		</tr>
 		<tr th:each="user : ${users}">
 			<td th:text="${user.username}"></td>
 			<td th:text="${user.firstName}"></td>
 			<td th:text="${user.LastName}"></td>
 			<td th:text="${user.email}"></td>
-			<td th:text="${user.superUser}"></td>
-			<td><a th:href="@{/delete/{id}(id=${user.id})}" class="btn btn-danger">Delete</a></td>
-			<td><a th:href="@{/editUser/{id}(id=${user.id})}" class="btn btn-danger">Edit</a></td>  
+			<td th:text="${user.role}"></td>
+			<td><a th:href="@{/admin/delete/{id}(id=${user.id})}" class="btn btn-danger">Delete</a></td>
+			<td><a th:href="@{/admin/editUser/{id}(id=${user.id})}" class="btn btn-danger">Edit</a></td>  
 		</tr>
 	</table>
 	

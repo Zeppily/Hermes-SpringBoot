@@ -24,8 +24,8 @@ public class HermesApplication {
 
 			// Adding predetermined Users
 			log.info("Adding Users");
-			User user1 = new User("admin", "admin", "Geoffrey", "Test", "tester@gmail.com", true);
-			User user2 = new User("user", "user", "Not Geoffrey", "Tester", "tester@gmail.com");
+			User user1 = new User("admin", "admin", "Geoffrey", "Test", "tester@gmail.com", "ADMIN");
+			User user2 = new User("user", "user", "Not Geoffrey", "Tester", "tester@gmail.com", "USER");
 			uRepository.save(user1);
 			uRepository.save(user2);
 

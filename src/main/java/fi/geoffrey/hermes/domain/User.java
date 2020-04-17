@@ -1,10 +1,13 @@
 package fi.geoffrey.hermes.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * Represents a Person with User like credentials 2 Parametric constructors to
@@ -19,12 +22,10 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(updatable = false)
 	private Long id;
 
-	/*
-	 * @ManyToMany List<Project> projects;
-	 */
-
+	@Column(unique = true, nullable = false)
 	private String username;
 
 	private String password;
@@ -35,10 +36,10 @@ public class User {
 
 	private String email;
 
-	private boolean superUser;
+	private String role;
 
 	public User() {
-		this.setSuperUser(false);
+		this.setRole("USER");
 	}
 
 	public User(String username, String password, String firstName, String lastName, String email) {
@@ -47,22 +48,22 @@ public class User {
 		this.setLastName(lastName);
 		this.setUsername(username);
 		this.setPassword(password);
-		this.setSuperUser(false);
+		this.setRole("USER");
 	}
 
-	public User(String username, String password, String firstName, String lastName, String email, boolean superUser) {
+	public User(String username, String password, String firstName, String lastName, String email, String role) {
 		this.setEmail(email);
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
-		this.setSuperUser(superUser);
+		this.setRole(role);
 		this.setUsername(username);
 		this.setPassword(password);
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
-	
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -80,7 +81,8 @@ public class User {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		BCryptPasswordEncoder bc = new BCryptPasswordEncoder();
+		this.password = bc.encode(password);
 	}
 
 	public String getFirstName() {
@@ -107,12 +109,14 @@ public class User {
 		this.email = email;
 	}
 
-	public boolean isSuperUser() {
-		return superUser;
+
+
+	public String getRole() {
+		return role;
 	}
 
-	public void setSuperUser(boolean superUser) {
-		this.superUser = superUser;
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	@Override

@@ -9,7 +9,7 @@
 
 
 <div class="d-flex p-2 bd-highlight">
-<form th:object="${user}" th:action="@{saveUser}" action="#" method="post">
+<form th:object="${user}" th:action="@{registration/saveUser}" action="#" method="post">
 <label for="title">Username</label>
 <input class="form-control" type="text" id="title" th:field="*{username}" />
 <label for="author">Password</label>
@@ -26,5 +26,6 @@
 <input type="submit" value="Save" class="btn btn-danger" ></input>
 </form>
 </div>
+<a th:href="@{../userlist}">Cancel</a>
 </body>
 </html>
