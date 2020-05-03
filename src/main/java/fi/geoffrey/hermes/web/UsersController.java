@@ -25,11 +25,15 @@ public class UsersController {
 	@Autowired
 	private UserRepository uRepository;
 
+	// All users to the userlist.html page
+
 	@RequestMapping(value = "/admin/userlist")
 	public String userList(Model model) {
 		model.addAttribute("users", uRepository.findAll());
 		return "userlist";
 	}
+
+	// redirect to registration page
 
 	@RequestMapping(value = "/registration")
 	public String addUser(Model model) {
@@ -38,6 +42,8 @@ public class UsersController {
 
 		return "registration";
 	}
+
+	// Create user and redirect home page upon successful validation
 
 	@RequestMapping(value = "/registration/saveUser", method = RequestMethod.POST)
 	public String saveUser(@Valid User user, BindingResult bindingResult) {
@@ -58,6 +64,8 @@ public class UsersController {
 		return "redirect:../index";
 	}
 
+	// Save function for administrator edited users
+
 	@RequestMapping(value = "/admin/saveUser", method = RequestMethod.POST)
 	public String saveUserAdmin(@Valid User user, BindingResult bindingResult) {
 
@@ -66,17 +74,23 @@ public class UsersController {
 		return "redirect:../admin/userlist";
 	}
 
+	// Delete function for administrator
+
 	@RequestMapping(value = "/admin/delete/{id}", method = RequestMethod.GET)
 	public String deleteUser(@PathVariable("id") Long userId, Model model) {
 		uRepository.deleteById(userId);
 		return "redirect:../userlist";
 	}
 
+	// Administrator redirect to edit users page
+
 	@RequestMapping(value = "/admin/editUser/{id}")
 	public String editUser(@PathVariable("id") Long userId, Model model) {
 		model.addAttribute("user", uRepository.findById(userId));
 		return "editUser";
 	}
+
+	// redirect to the login page
 
 	@RequestMapping(value = "/login")
 	public String login() {

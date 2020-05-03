@@ -158,6 +158,10 @@ public class User {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	
+	public void addProject(Project project) {
+		this.projects.add(project);
+	}
 
 	@Override
 	public String toString() {

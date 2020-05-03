@@ -23,7 +23,6 @@ public class Project {
 
 	@NotNull
 	private String name;
-	private boolean finished;
 
 	
 	public Project() {
@@ -32,7 +31,6 @@ public class Project {
 
 	public Project(String name) {
 		this.setName(name);
-		this.setFinished(false);
 	}
 	
 	//many to many getter
@@ -60,16 +58,8 @@ public class Project {
 		this.name = name;
 	}
 
-	public boolean isFinished() {
-		return finished;
-	}
-
-	public void setFinished(boolean finished) {
-		this.finished = finished;
-	}
-
 	@Override
 	public String toString() {
-		return this.getName() + " " + this.isFinished();
+		return this.getName();
 	}
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>project list</title>
+</head>
+<body>
+	<h3 th:inline="text">Logged in as
+		[[${#httpServletRequest.remoteUser}]]!</h3>
+	<form th:action="@{/logout}" method="post">
+		<input type="submit" value="Sign Out" />
+	</form>
+
+	<h1>Projects</h1>
+	<table class="table table-striped">
+			<tr>
+			<th>Project Name</th>
+			<th>Project Members</th>
+
+		</tr>
+		<tr th:each="project : ${students}">
+			<td th:text="${project.name}"></td>
+			<td><span th:each="user,iterStat : ${student.users}">
+					<span th:text="${user.firstName}" />
+				<th:block th:if="${!iterStat.last}">,</th:block>
+			</span></td>
+
+		</tr>
+	</table>
+
+
+</body>
+</html>
