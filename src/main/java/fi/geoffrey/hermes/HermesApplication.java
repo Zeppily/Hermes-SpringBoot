@@ -22,17 +22,24 @@ public class HermesApplication {
 	public CommandLineRunner hermesDemo(UserRepository uRepository) {
 		return (args) -> {
 
-			// Adding predetermined Users
-			log.info("Adding Users");
-			User user1 = new User("admin", "admin", "Geoffrey", "Test", "tester@gmail.com", "ADMIN");
-			User user2 = new User("user", "user", "Not Geoffrey", "Tester", "tester@gmail.com", "USER");
-			uRepository.save(user1);
-			uRepository.save(user2);
+			// Adding predetermined Users if not already in database
+			if(uRepository.count() == 0) {
+				log.info("Adding Users");
 
-			log.info("added users");
-			for (User user : uRepository.findAll()) {
-				log.info(user.toString());
+				User user1 = new User("admin", "admin", "Geoffrey", "Test", "admin@gmail.com", "ADMIN");
+				User user2 = new User("user", "user", "Not Geoffrey", "Tester", "user@gmail.com", "USER");
+				uRepository.save(user1);
+				uRepository.save(user2);
+
+				log.info("added users");
+				for (User user : uRepository.findAll()) {
+					log.info(user.toString());
+				}
+			}else {
+				log.info("=== NO USERS ADDED, ALREADY IN DB ===");
 			}
+
+
 
 		};
 	}

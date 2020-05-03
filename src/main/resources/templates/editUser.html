@@ -8,7 +8,7 @@
 <h1>Edit User</h1>
 <div>
 <div class="d-flex p-2 bd-highlight">
-<form th:object="${user}" th:action="@{../../registration/saveUser}" action="#" method="post">
+<form th:object="${user}" th:action="@{/admin/saveUser}" action="#" method="post">
 <div class="form-group">
 <label for="id">id</label><br />
 <input class="form-control" type="text" id="id" th:field="*{id}" readonly="readonly" /><br />
