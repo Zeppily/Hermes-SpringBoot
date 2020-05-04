@@ -93,7 +93,7 @@ public class User {
 
 	//many to many getter
 
-	public Set<Project> getCourses(){
+	public Set<Project> getProjects(){
 		return this.projects;
 	}
 	

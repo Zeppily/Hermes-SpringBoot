@@ -3,6 +3,7 @@ package fi.geoffrey.hermes.domain;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,6 +25,7 @@ public class Project {
 	private Long id;
 
 	@NotNull
+	@Column(unique = true)
 	private String name;
 
 	

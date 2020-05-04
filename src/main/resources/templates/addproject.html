@@ -8,8 +8,16 @@
 <h1>Add project</h1>
 
 
+
 <div class="d-flex p-2 bd-highlight">
 <form th:object="${project}" th:action="@{/saveProject}" action="#" method="post">
+
+    <div style="color: red;" th:if="${#fields.hasErrors('*')}">
+        <p><strong>Errors</strong></p>
+        <ul>
+            <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+        </ul>
+    </div>
 
 <label for="author">Project Name</label>
 <input class="form-control" type="text" id="name" th:field="*{name}" />

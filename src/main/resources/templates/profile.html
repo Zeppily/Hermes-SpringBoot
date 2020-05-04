@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>User List</title>
+</head>
+<body>
+	<a th:href="@{../index}">Home</a>
+	<a th:href="@{/addproject}">New project</a>
+	<h1 th:inline="text"> [[${#httpServletRequest.remoteUser}]]'s profile page</h1>
+	
+	
+		
+	<p  th:text="'Hello ' + ${user.firstName} + ' ' + ${user.lastName}" > </p>
+	
+	<h3>Projects you are part of:</h3>
+		
+	<table class="table table-striped">
+		<tr>
+			<th>Project Name</th>
+			<th>Project Members</th>
+			<th>Project Link</th>
+
+		</tr>
+		<tr th:each="project : ${user.projects}">
+			<td th:text="${project.name}"></td>
+
+			<td>
+			<span th:each="users,iterStat : ${project.users}"> 
+			<span th:text="${users.firstName} + ' ' + ${users.lastName}" /> 
+			<th:block th:if="${!iterStat.last}">,</th:block>
+			</span></td>
+
+		<td><a th:href="@{/project/{name}(name=${project.name})}">link</a></td>
+		</tr>
+	</table>
+		
+</body>
+</html>
