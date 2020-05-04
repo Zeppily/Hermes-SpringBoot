@@ -162,6 +162,10 @@ public class User {
 	public void addProject(Project project) {
 		this.projects.add(project);
 	}
+	
+	public void removeProject(Project project) {
+		this.projects.remove(project);
+	}
 
 	@Override
 	public String toString() {

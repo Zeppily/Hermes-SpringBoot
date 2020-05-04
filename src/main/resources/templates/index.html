@@ -12,14 +12,30 @@
 			<input type="submit" value="Sign Out" />
 		</form>
 	</div>
+	<h1>Hermes Application Build 1.0</h1>
 	<div sec:authorize="isAnonymous()">
 		<a th:href="@{/login}">Login</a>
+		<br />
+		<a th:href="@{/registration}">Sign up</a>
 	</div>
-	<h1>Hermes Application Build 0.1</h1>
 
-	<a th:href="@{/admin/userlist}">View Users</a>
+	<div sec:authorize="hasAuthority('ADMIN')">
+		<h3>Admin Actions</h3>
+		<a th:href="@{/admin/userlist}">View Users</a>
+		<br />
+		<a th:href="@{/admin/projectlist}">View Projects</a>
+		
+		<p> Admins can view, edit and delete users, view and delete projects </p>
+	</div>
+	
+	<div sec:authorize="hasAuthority('USER')">
+		<h3>User Actions</h3>
+		<a th:href="@{/addproject}">Create new project</a>
+		<br />
 	<br />
-	<a th:href="@{/registration}">Sign up</a>
+	
+	</div>
+
 
 </body>
 </html>

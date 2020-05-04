@@ -60,6 +60,7 @@ public class HermesApplication {
 				uRepository.save(user4);
 				uRepository.save(user5);
 
+				
 				/*
 				Set<User> users1 = new HashSet<User>();
 				users1.add(user3);
@@ -80,7 +81,10 @@ public class HermesApplication {
 			} else {
 				log.info("=== NO DATA ADDED, DB ALREADY POPULATED ===");
 			}
-
+			
+			for (Project p : pRepository.findAll()) {
+				log.info(p.toString());
+			}
 		};
 	}
 

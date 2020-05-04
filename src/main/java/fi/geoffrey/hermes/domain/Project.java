@@ -1,8 +1,10 @@
 package fi.geoffrey.hermes.domain;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "project")
 public class Project {
 
-	@ManyToMany(mappedBy = "projects")
+	@ManyToMany(mappedBy = "projects", fetch=FetchType.EAGER)
 	private Set<User> users;
 	
 	@Id
@@ -34,7 +36,7 @@ public class Project {
 	}
 	
 	//many to many getter
-	public Set<User> getUser(){
+	public Set<User> getUsers(){
 		return this.users;
 	}
 	
@@ -60,6 +62,12 @@ public class Project {
 
 	@Override
 	public String toString() {
-		return this.getName();
+		String projectUsers = "";
+		Iterator<User> itr = users.iterator();
+		
+		while(itr.hasNext()){
+			projectUsers = projectUsers + itr.next().toString() + " ";
+		}
+		return "Project name: " + this.getName() + "members: " + projectUsers;
 	}
 }

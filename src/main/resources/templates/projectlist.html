@@ -13,21 +13,23 @@
 
 	<h1>Projects</h1>
 	<table class="table table-striped">
-			<tr>
+		<tr>
 			<th>Project Name</th>
 			<th>Project Members</th>
 
 		</tr>
-		<tr th:each="project : ${students}">
+		<tr th:each="project : ${projects}">
 			<td th:text="${project.name}"></td>
-			<td><span th:each="user,iterStat : ${student.users}">
-					<span th:text="${user.firstName}" />
-				<th:block th:if="${!iterStat.last}">,</th:block>
+
+			<td><span th:each="users,iterStat : ${project.users}"> 
+			<span th:text="${users.firstName} + ' ' + ${users.lastName}" /> <th:block th:if="${!iterStat.last}">,</th:block>
 			</span></td>
 
+		<td><a th:href="@{/projectdelete/{id}(id=${project.id})}" class="btn btn-danger">Delete</a></td>
 		</tr>
 	</table>
-
+	<br />
+	<a th:href="@{../index}">Home</a>
 
 </body>
 </html>
