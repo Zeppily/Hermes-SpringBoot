@@ -117,7 +117,7 @@ public class UsersController {
 			model.addAttribute("user", user);
 			return "profile";
 		}else {
-			return "error";
+			return "errorAccess";
 		}
 	}
 }

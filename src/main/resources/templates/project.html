@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title th:text="${project.name}">title</title>
+</head>
+<body>
+	<a th:href="@{../../index}">Home</a>
+	<h1 th:text="${project.name} + ' Project page'">Project Page</h1>
+	
+	
+	<h3>Project members:</h3>
+	<span th:each="users,iterStat : ${project.users}"> <span
+		th:text="${users.firstName} + ' ' + ${users.lastName}" /> <th:block
+			th:if="${!iterStat.last}">,</th:block>
+	</span>
+	
+	<h3>Add members:</h3>
+	<form th:action="@{/project/{name}/addmember(name=${project.name})}" method="get" >
+	
+	<label for="email">email address:</label>
+	<input class="form-control" type="text" id="email" name="email" />
+	<input type="submit" class="btn btn-success" value="Add Member"/>
+	</form>
+	
+	
+
+</body>
+</html>

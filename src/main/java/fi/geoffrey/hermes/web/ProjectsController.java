@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import fi.geoffrey.hermes.domain.Project;
 import fi.geoffrey.hermes.domain.ProjectRepository;
@@ -40,7 +41,7 @@ public class ProjectsController {
 	}
 
 	// Add project redirect
-	
+
 	@RequestMapping(value = "/addproject")
 	public String addProject(Model model, Authentication authentication) {
 		model.addAttribute("project", new Project());
@@ -48,7 +49,7 @@ public class ProjectsController {
 	}
 
 	// Create a project
-	
+
 	@RequestMapping(value = "/saveProject", method = RequestMethod.POST)
 	public String saveProject(Project project, Authentication auth, BindingResult bindingResult) {
 		if (pRepository.findByName(project.getName()) != null) {
@@ -56,22 +57,51 @@ public class ProjectsController {
 			return "addproject";
 		}
 		User user = uRepository.findByUsername(auth.getName());
-		
+
 		pRepository.save(project);
-		
+
 		user.addProject(project);
 		uRepository.save(user);
-		
+
 		return "redirect:/index";
 	}
 
 	// Project Page
-	
+
+	@RequestMapping(value = "/project/{name}", method = RequestMethod.GET)
+	public String projectPage(Authentication auth, Model model, @PathVariable("name") String projectName) {
+		Project project = pRepository.findByName(projectName);
+		User user = uRepository.findByUsername(auth.getName());
+
+		if (project.getUsers().contains(user)) {
+			model.addAttribute("project", project);
+			return "project";
+		} else {
+			return "errorAccess";
+		}
+	}
+
 	// Adding users to a project
-	
+	@RequestMapping(value = "/project/{name}/addmember", method = RequestMethod.GET)
+	public String addMemberProject(@PathVariable("name") String projectName, @RequestParam String email, Model model,
+			Authentication auth) {
+
+		Project project = pRepository.findByName(projectName);
+		User user = uRepository.findByUsername(auth.getName());
+		User userAdd = uRepository.findByEmail(email);
+		
+		if(project.getUsers().contains(user) && userAdd != null) {
+			userAdd.addProject(project);
+			uRepository.save(userAdd);
+			model.addAttribute("project", project);
+			return "project";
+		}else {
+			return"errorAccess";
+		}	
+	}
 	// Delete project function
 	// This erases the project from all the users before deleting the project
-	
+
 	@RequestMapping(value = "/projectdelete/{id}", method = RequestMethod.GET)
 	public String deleteProject(@PathVariable("id") Long projectId, Model model, Authentication authentication) {
 		String authName = authentication.getName();
