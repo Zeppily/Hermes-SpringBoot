@@ -90,6 +90,15 @@ public class UsersController {
 		model.addAttribute("user", uRepository.findById(userId));
 		return "editUser";
 	}
+	
+	// Give admin role to a user
+	
+	@RequestMapping(value = "/admin/setAdmin/{id}")
+	public String setAdmin(@PathVariable("id") Long userId, Model mode) {
+		uRepository.findById(userId).get().setRole("ADMIN");
+		uRepository.save(uRepository.findById(userId).get());
+		return "redirect:../userlist";
+	}
 
 	// redirect to the login page
 

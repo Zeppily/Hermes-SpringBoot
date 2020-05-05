@@ -27,6 +27,7 @@
 			<td th:text="${user.role}"></td>
 			<td><a th:href="@{/admin/delete/{id}(id=${user.id})}" class="btn btn-danger">Delete</a></td>
 			<td><a th:href="@{/admin/editUser/{id}(id=${user.id})}" class="btn btn-danger">Edit</a></td>  
+			<td><a th:href="@{/admin/setAdmin/{id}(id=${user.id})}" class="btn btn-danger">Make Admin</a></td>  
 		</tr>
 	</table>
 	<br />

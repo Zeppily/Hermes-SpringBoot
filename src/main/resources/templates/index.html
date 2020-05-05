@@ -28,7 +28,7 @@
 		<p> Admins can view, edit and delete users, view and delete projects </p>
 	</div>
 	
-	<div sec:authorize="hasAuthority('USER')">
+	<div sec:authorize="isAuthenticated()">
 		<h3>User Actions</h3>
 		<a th:href="@{/profile/{username}(username=${#httpServletRequest.remoteUser})}">View profile</a>
 		<br />
