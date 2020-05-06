@@ -3,20 +3,28 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Hermes - Home</title>
+<link type = "text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
+<link rel="icon" type="image/png" sizes="16x16" th:href="@{/images/logo.png}">
 </head>
 <body>
-	<div sec:authorize="isAuthenticated()">
+	<div sec:authorize="isAuthenticated()" class="float-none">
 		<h3 th:inline="text">Logged in as
 			[[${#httpServletRequest.remoteUser}]]!</h3>
 		<form th:action="@{/logout}" method="post">
-			<input type="submit" value="Sign Out" />
+			<input type="submit" value="Sign Out" class="btn btn-danger"/>
 		</form>
 	</div>
+	
+	<div class="d-flex justify-content-center">
 	<h1>Hermes Application Build 1.0</h1>
+	</div>
+	
+	<div class="d-flex justify-content-center">
+	<img th:src="@{/images/logo.png}" class="float-left"/>
+
 	<div sec:authorize="isAnonymous()">
-		<a th:href="@{/login}">Login</a>
-		<br />
-		<a th:href="@{/registration}">Sign up</a>
+		<a th:href="@{/login}" class="btn btn-primary">Login</a>
+		<a th:href="@{/registration}" class="btn btn-primary">Sign up</a>
 	</div>
 
 	<div sec:authorize="hasAuthority('ADMIN')">
@@ -25,10 +33,10 @@
 		<br />
 		<a th:href="@{/admin/projectlist}">View Projects</a>
 		
-		<p> Admins can view, edit and delete users, view and delete projects </p>
+		
 	</div>
 	
-	<div sec:authorize="isAuthenticated()">
+	<div sec:authorize="isAuthenticated()" >
 		<h3>User Actions</h3>
 		<a th:href="@{/profile/{username}(username=${#httpServletRequest.remoteUser})}">View profile</a>
 		<br />
@@ -37,6 +45,7 @@
 	<br />
 	
 	</div>
+</div>
 
 
 </body>

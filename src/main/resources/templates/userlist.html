@@ -2,36 +2,45 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>User List</title>
+<title>Hermes - UserList</title>
+<link type = "text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+<link rel="icon" type="image/png" sizes="16x16" th:href="@{/images/logo.png}">
 </head>
 <body>
-	<h3 th:inline="text">Logged in as [[${#httpServletRequest.remoteUser}]]!</h3>
-	<form th:action="@{/logout}" method="post">
-		<input type="submit" value="Sign Out"/>
-	</form>
-	
+	<div sec:authorize="isAuthenticated()" class="float-none">
+		<h3 th:inline="text">Logged in as
+			[[${#httpServletRequest.remoteUser}]]!</h3>
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Sign Out" class="btn btn-danger"/>
+		</form>
+	</div>
+	<div class="d-flex justify-content-center mt-3">
 	<h1>Registered users</h1>
+	</div>
 	<table class="table table-striped">
+	<thead class="thead-dark">
 		<tr>
 			<th>Username</th>
 			<th>First Name</th>
 			<th>Last Name</th>
 			<th>Email</th>
 			<th>Role</th>
+			<th>Actions</th>
 		</tr>
+		</thead>
 		<tr th:each="user : ${users}">
 			<td th:text="${user.username}"></td>
 			<td th:text="${user.firstName}"></td>
 			<td th:text="${user.LastName}"></td>
 			<td th:text="${user.email}"></td>
 			<td th:text="${user.role}"></td>
-			<td><a th:href="@{/admin/delete/{id}(id=${user.id})}" class="btn btn-danger">Delete</a></td>
-			<td><a th:href="@{/admin/editUser/{id}(id=${user.id})}" class="btn btn-danger">Edit</a></td>  
-			<td><a th:href="@{/admin/setAdmin/{id}(id=${user.id})}" class="btn btn-danger">Make Admin</a></td>  
+			<td><a th:href="@{/admin/delete/{id}(id=${user.id})}" class="btn btn-danger">Delete</a>
+			<a th:href="@{/admin/editUser/{id}(id=${user.id})}" class="btn btn-primary">Edit</a>
+			<a th:href="@{/admin/setAdmin/{id}(id=${user.id})}" class="btn btn-info">Make Admin</a></td>  
 		</tr>
 	</table>
 	<br />
-	<a th:href="@{../index}">Home</a>
+	<a th:href="@{../index}" class="m-1 btn btn-danger">Home</a>
 	
 	
 </body>

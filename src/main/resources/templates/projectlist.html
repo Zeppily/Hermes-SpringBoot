@@ -2,22 +2,31 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>project list</title>
+<title>Hermes - Project List</title>
+<link type = "text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+<link rel="icon" type="image/png" sizes="16x16" th:href="@{/images/logo.png}">
 </head>
 <body>
-	<h3 th:inline="text">Logged in as
-		[[${#httpServletRequest.remoteUser}]]!</h3>
-	<form th:action="@{/logout}" method="post">
-		<input type="submit" value="Sign Out" />
-	</form>
+	<div sec:authorize="isAuthenticated()" class="float-none">
+		<h3 th:inline="text">Logged in as
+			[[${#httpServletRequest.remoteUser}]]!</h3>
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Sign Out" class="btn btn-danger"/>
+		</form>
+	</div>
+<div class="d-flex justify-content-center mt-3">
+	<h1>All Projects</h1>
+	</div>
 
-	<h1>Projects</h1>
 	<table class="table table-striped">
+	<thead class="thead-dark">
 		<tr>
 			<th>Project Name</th>
 			<th>Project Members</th>
+			<th>Actions</th>
 
 		</tr>
+		</thead>
 		<tr th:each="project : ${projects}">
 			<td th:text="${project.name}"></td>
 
@@ -29,7 +38,7 @@
 		</tr>
 	</table>
 	<br />
-	<a th:href="@{../index}">Home</a>
+	<a th:href="@{../index}" class="btn btn-danger">Home</a>
 
 </body>
 </html>

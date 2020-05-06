@@ -2,12 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>User Edit</title>
+<title>Hermes- User Edit</title>
+<link type = "text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+<link rel="icon" type="image/png" sizes="16x16" th:href="@{/images/logo.png}">
 </head>
 <body>
+<div class="d-flex justify-content-center mt-3">
 <h1>Edit User</h1>
+</div>
 <div>
-<div class="d-flex p-2 bd-highlight">
+<div class="d-flex justify-content-center mt-3">
 <form th:object="${user}" th:action="@{/admin/saveUser}" action="#" method="post">
 <div class="form-group">
 <label for="id">id</label><br />
@@ -25,8 +29,8 @@
 </div>
 
 <br />
-<input type="submit" value="Save" class="btn btn-danger"></input>
-<a th:href="@{../userlist}">Cancel</a>
+<input type="submit" value="Save" class="btn btn-primary"></input>
+<a th:href="@{../userlist}" class="btn btn-danger">Cancel</a>
 </form>
 </div>
 </div>
