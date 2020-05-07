@@ -1,6 +1,7 @@
 package fi.geoffrey.hermes.domain;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -38,6 +40,9 @@ public class User {
 			joinColumns = { @JoinColumn(name = "userid") },
 			inverseJoinColumns = { @JoinColumn(name = "projectid") })
 	private Set<Project> projects = new HashSet<Project>(0);
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	private List<Task> tasks;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

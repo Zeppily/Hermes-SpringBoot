@@ -23,18 +23,87 @@
 
 		</span>
 	</div>
-	<div class="ml-5">
-	<h3>Add member:</h3>
-	<form th:action="@{/project/{name}/addmember(name=${project.name})}"
-		method="get">
 
-		<label for="email">email address:</label> <input class="form-control"
-		style="max-width: 400px"
-			type="text" id="email" name="email" /> <input type="submit"
-			class="btn btn-success mt-1" value="Add Member" />
-	</form>
+	<div class="row justify-content-md-center">
+		<div class="col-md-2">
+			<h3>Add member:</h3>
+			<form th:action="@{/project/{name}/addmember(name=${project.name})}"
+				method="get">
+
+				<label for="email">email address:</label> <input
+					class="form-control" style="max-width: 400px" type="text"
+					id="email" name="email" /> <input type="submit"
+					class="btn btn-success mt-1" value="Add Member" />
+			</form>
+		</div>
+
+
+		<div class="col-md-2">
+			<h3>Add tasks:</h3>
+			<form th:action="@{/project/{name}/addtask(name=${project.name})}"
+				method="get">
+
+				<label for="email">Task description:</label> <input
+					class="form-control" style="max-width: 400px" type="text"
+					id="email" name="description" /> <input type="submit"
+					class="btn btn-success mt-1" value="Add Task" />
+			</form>
+		</div>
 	</div>
-
-
+	
+	<div class="row mt-5 justify-content-md-center">
+	<div class="col-3">
+	<h3>Planned tasks</h3>
+	<table class=" table table-striped">
+		<tr>
+			<th>Task</th>
+			<th>Actions</th>
+		</tr>
+		<tr th:each="task : ${todos}">
+			<td th:text="${task.description}"></td>
+			<td><a th:href="@{/deletetask/{id}(id=${task.id})}"
+				class="btn btn-danger">Delete</a>
+				<a th:href="@{/movetask/{id}(id=${task.id})}"
+				class="btn btn-primary">Start Task</a></td>
+		</tr>
+	</table>
+	</div>
+	
+	<div class="col-3">
+	<h3>Tasks In progress</h3>
+		<table  class=" table table-striped">
+		<tr>
+			<th>Task</th>
+			<th>Worked by</th>
+			<th>Actions</th>
+		</tr>
+		<tr th:each="task : ${progress}">
+			<td th:text="${task.description}"></td>
+			<td th:text="${task.user.firstName} + ' ' + ${task.user.lastName}"></td>
+			<td><a th:href="@{/deletetask/{id}(id=${task.id})}"
+				class="btn btn-danger">Delete</a>
+				<a th:href="@{/movetask/{id}(id=${task.id})}"
+				class="btn btn-primary">Complete Task</a></td>
+		</tr>
+	</table>
+	</div>
+	
+	<div class="col-3">
+	<h3>Completed tasks</h3>
+		<table  class=" table table-striped">
+		<tr>
+			<th>Task</th>
+			<th>Completed by</th>
+			<th>Actions</th>
+		</tr>
+		<tr th:each="task : ${completed}">
+			<td th:text="${task.description}"></td>
+			<td th:text="${task.user.firstName} + ' ' + ${task.user.lastName}"></td>
+			<td><a th:href="@{/deletetask/{id}(id=${task.id})}"
+				class="btn btn-danger">Delete</a></td>
+		</tr>
+	</table>
+	</div>
+	</div>
 </body>
 </html>

@@ -1,6 +1,9 @@
 package fi.geoffrey.hermes.web;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import fi.geoffrey.hermes.domain.Project;
 import fi.geoffrey.hermes.domain.ProjectRepository;
+import fi.geoffrey.hermes.domain.Task;
+import fi.geoffrey.hermes.domain.TaskRepository;
 import fi.geoffrey.hermes.domain.User;
 import fi.geoffrey.hermes.domain.UserRepository;
 
@@ -25,6 +30,9 @@ import fi.geoffrey.hermes.domain.UserRepository;
  */
 @Controller
 public class ProjectsController {
+
+	@Autowired
+	private TaskRepository tRepository;
 
 	@Autowired
 	private UserRepository uRepository;
@@ -72,9 +80,28 @@ public class ProjectsController {
 	public String projectPage(Authentication auth, Model model, @PathVariable("name") String projectName) {
 		Project project = pRepository.findByName(projectName);
 		User user = uRepository.findByUsername(auth.getName());
+		List<Task> tasks = project.getTasks();
+		List<Task> todo = new ArrayList<Task>();
+		List<Task> progress = new ArrayList<Task>();
+		List<Task> completed = new ArrayList<Task>();
+
+		for (Task task : tasks) {
+			if (task.getState() == 1) {
+				todo.add(task);
+			}
+			if (task.getState() == 2) {
+				progress.add(task);
+			}
+			if (task.getState() == 3) {
+				completed.add(task);
+			}
+		}
 
 		if (project.getUsers().contains(user)) {
 			model.addAttribute("project", project);
+			model.addAttribute("todos", todo);
+			model.addAttribute("progress", progress);
+			model.addAttribute("completed", completed);
 			return "project";
 		} else {
 			return "errorAccess";
@@ -82,23 +109,66 @@ public class ProjectsController {
 	}
 
 	// Adding users to a project
+
 	@RequestMapping(value = "/project/{name}/addmember", method = RequestMethod.GET)
 	public String addMemberProject(@PathVariable("name") String projectName, @RequestParam String email, Model model,
-			Authentication auth) {
+			Authentication auth, HttpServletRequest request) {
 
 		Project project = pRepository.findByName(projectName);
 		User user = uRepository.findByUsername(auth.getName());
 		User userAdd = uRepository.findByEmail(email);
-		
-		if(project.getUsers().contains(user) && userAdd != null) {
+
+		if (project.getUsers().contains(user) && userAdd != null) {
 			userAdd.addProject(project);
 			uRepository.save(userAdd);
 			model.addAttribute("project", project);
-			return "project";
-		}else {
-			return"errorAccess";
-		}	
+			String referer = request.getHeader("Referer");
+			return "redirect:" + referer;
+		} else {
+			return "errorAccess";
+		}
 	}
+
+	// Add task to a project
+
+	@RequestMapping(value = "/project/{name}/addtask", method = RequestMethod.GET)
+	public String addTask(@PathVariable("name") String projectName, @RequestParam String description, Model model,
+			Authentication auth, HttpServletRequest request) {
+		Project project = pRepository.findByName(projectName);
+		if (description != "") {
+			Task task = new Task(description, 1, project);
+			tRepository.save(task);
+		}
+
+		// model.addAttribute("project", project);
+		String referer = request.getHeader("Referer");
+		return "redirect:" + referer;
+	}
+
+	// Set a task to in progress or completed
+	
+	@RequestMapping(value = "/movetask/{id}", method = RequestMethod.GET)
+	public String progressTask(@PathVariable("id") Long taskId, Model model, Authentication authentication,
+			HttpServletRequest request) {
+		
+		Task task = tRepository.findById(taskId).get();
+		
+		
+		if(task.getState() == 2) {
+			task.setState(3);
+			tRepository.save(task);			
+		}
+		
+		if(task.getState() == 1) {
+			task.setState(2);
+			task.setUser(uRepository.findByUsername(authentication.getName()));
+			tRepository.save(task);			
+		}
+		
+		String referer = request.getHeader("Referer");
+		return "redirect:" + referer;
+	}
+
 	// Delete project function
 	// This erases the project from all the users before deleting the project
 
@@ -118,4 +188,20 @@ public class ProjectsController {
 		}
 		return "redirect:../admin/projectlist";
 	}
+
+	// Delete Task
+	@RequestMapping(value = "/deletetask/{id}", method = RequestMethod.GET)
+	public String deleteTask(@PathVariable("id") Long taskId, Model model, Authentication authentication,
+			HttpServletRequest request) {
+		Task task = tRepository.findById(taskId).get();
+
+		if (task != null) {
+			tRepository.deleteById(taskId);
+		}
+
+		String referer = request.getHeader("Referer");
+		return "redirect:" + referer;
+
+	}
+
 }
