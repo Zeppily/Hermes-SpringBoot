@@ -47,6 +47,9 @@ public class HermesApplication {
 				log.info("adding projects");
 				Project project1 = new Project("Bookstore");
 				Project project2 = new Project("Terminator Reformed");
+				
+				project1.setProjectOwner(user3);
+				project2.setProjectOwner(user5);
 
 				pRepository.save(project1);
 				pRepository.save(project2);

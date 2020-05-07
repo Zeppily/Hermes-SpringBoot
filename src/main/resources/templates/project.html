@@ -9,7 +9,15 @@
 	th:href="@{/images/logo.png}">
 </head>
 <body>
-	<a class="btn ml-5 btn-danger" th:href="@{../../index}">Home</a>
+	<div sec:authorize="isAuthenticated()" class="float-none">
+		<h3 th:inline="text">Logged in as
+			[[${#httpServletRequest.remoteUser}]]!</h3>
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Sign Out" class="btn btn-danger"/>
+		</form>
+	</div>
+
+	<a class="btn mt-2 ml-5 btn-danger" th:href="@{../../index}">Home</a>
 	<div class="d-flex justify-content-center">
 		<h1 th:text="${project.name} + ' Project page'">Project Page</h1>
 	</div>
@@ -24,6 +32,15 @@
 		</span>
 	</div>
 
+
+	<div class="mb-3 mt-3 d-flex justify-content-center">
+		<h5 th:text="'Project Owner: ' + ${project.projectOwner.firstName} + ' ' + ${project.projectOwner.lastName}">Project Owner:</h5>
+	</div>
+
+<span th:if="${owner}">
+	<div class="row justify-content-md-center">
+	<a th:href="@{/projectdelete/{id}(id=${project.id})}" class=" mt-3 mb-3 btn btn-danger">PERMANENTLY Delete project</a>
+	</div>
 	<div class="row justify-content-md-center">
 		<div class="col-md-2">
 			<h3>Add member:</h3>
@@ -50,7 +67,8 @@
 			</form>
 		</div>
 	</div>
-	
+
+</span>	
 	<div class="row mt-5 justify-content-md-center">
 	<div class="col-3">
 	<h3>Planned tasks</h3>

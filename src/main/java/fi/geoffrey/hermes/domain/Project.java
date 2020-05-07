@@ -11,7 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -30,6 +32,10 @@ public class Project {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "userId")
+	private User projectOwner;
+	
 	@NotNull
 	@Column(unique = true)
 	private String name;
@@ -77,6 +83,18 @@ public class Project {
 
 	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
+	}	
+
+	public User getProjectOwner() {
+		return projectOwner;
+	}
+	
+	public String getProjectOwnerString() {
+		return this.projectOwner.getFirstName() + " " + this.projectOwner.getLastName();
+	}
+
+	public void setProjectOwner(User projectOwner) {
+		this.projectOwner = projectOwner;
 	}
 
 	@Override

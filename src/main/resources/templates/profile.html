@@ -24,10 +24,11 @@
 	<div class="ml-5">
 		<h3>Projects you are part of:</h3>
 	</div>
-	<table style="width: 40%" class="ml-5 table table-striped">
+	<table style="width: 50%" class="ml-5 table table-striped">
 		<tr>
 			<th>Project Name</th>
 			<th>Project Members</th>
+			<th>Project Owner</th>
 			<th>Project Link</th>
 
 		</tr>
@@ -38,7 +39,7 @@
 					th:text="${users.firstName} + ' ' + ${users.lastName}" /> <th:block
 						th:if="${!iterStat.last}">,</th:block>
 			</span></td>
-
+			<td th:text="${project.projectOwner.firstName} + ' ' + ${project.projectOwner.lastName}"></td>
 			<td><a th:href="@{/project/{name}(name=${project.name})}"
 				class="btn btn-primary">Project link</a></td>
 		</tr>

@@ -44,6 +44,9 @@ public class User {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private List<Task> tasks;
 
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "projectOwner")
+	private List<Project> ownedProjects;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(updatable = false)
@@ -170,6 +173,26 @@ public class User {
 	
 	public void removeProject(Project project) {
 		this.projects.remove(project);
+	}
+	
+	public void addProjectOwned(Project project) {
+		this.ownedProjects.add(project);
+	}
+
+	public List<Task> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(List<Task> tasks) {
+		this.tasks = tasks;
+	}
+
+	public List<Project> getOwnedProjects() {
+		return ownedProjects;
+	}
+
+	public void setOwnedProjects(List<Project> ownedProjects) {
+		this.ownedProjects = ownedProjects;
 	}
 
 	@Override

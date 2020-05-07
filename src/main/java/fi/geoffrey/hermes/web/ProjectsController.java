@@ -65,7 +65,7 @@ public class ProjectsController {
 			return "addproject";
 		}
 		User user = uRepository.findByUsername(auth.getName());
-
+		project.setProjectOwner(user);
 		pRepository.save(project);
 
 		user.addProject(project);
@@ -98,6 +98,12 @@ public class ProjectsController {
 		}
 
 		if (project.getUsers().contains(user)) {
+
+			if (user.getUsername().equals(project.getProjectOwner().getUsername())) {
+				model.addAttribute("owner", true);
+			} else {
+				model.addAttribute("owner", false);
+			}
 			model.addAttribute("project", project);
 			model.addAttribute("todos", todo);
 			model.addAttribute("progress", progress);
@@ -146,25 +152,24 @@ public class ProjectsController {
 	}
 
 	// Set a task to in progress or completed
-	
+
 	@RequestMapping(value = "/movetask/{id}", method = RequestMethod.GET)
 	public String progressTask(@PathVariable("id") Long taskId, Model model, Authentication authentication,
 			HttpServletRequest request) {
-		
+
 		Task task = tRepository.findById(taskId).get();
-		
-		
-		if(task.getState() == 2) {
+
+		if (task.getState() == 2) {
 			task.setState(3);
-			tRepository.save(task);			
+			tRepository.save(task);
 		}
-		
-		if(task.getState() == 1) {
+
+		if (task.getState() == 1) {
 			task.setState(2);
 			task.setUser(uRepository.findByUsername(authentication.getName()));
-			tRepository.save(task);			
+			tRepository.save(task);
 		}
-		
+
 		String referer = request.getHeader("Referer");
 		return "redirect:" + referer;
 	}
@@ -177,15 +182,22 @@ public class ProjectsController {
 		String authName = authentication.getName();
 		Project project = pRepository.findById(projectId).get();
 
-		if (uRepository.findByUsername(authName).getRole().equals("ADMIN")) {
+		if (uRepository.findByUsername(authName).getRole().equals("ADMIN")
+				|| project.getProjectOwner().getUsername().equals(authName)) {
 			List<User> users = uRepository.findUsersByProjectsId(projectId);
 
 			for (User user : users) {
 				user.removeProject(project);
+				uRepository.save(user);
 			}
 
 			pRepository.deleteById(projectId);
 		}
+
+		if (project.getProjectOwner().getUsername().equals(authName)) {
+			return "redirect:/index";
+		}
+
 		return "redirect:../admin/projectlist";
 	}
 

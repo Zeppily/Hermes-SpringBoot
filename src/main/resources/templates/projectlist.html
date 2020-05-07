@@ -23,6 +23,7 @@
 		<tr>
 			<th>Project Name</th>
 			<th>Project Members</th>
+			<th>Project Owner </th>
 			<th>Actions</th>
 
 		</tr>
@@ -33,7 +34,7 @@
 			<td><span th:each="users,iterStat : ${project.users}"> 
 			<span th:text="${users.firstName} + ' ' + ${users.lastName}" /> <th:block th:if="${!iterStat.last}">,</th:block>
 			</span></td>
-
+		<td th:text="${project.projectOwner.firstName} + ' ' + ${project.projectOwner.lastName}"></td>
 		<td><a th:href="@{/projectdelete/{id}(id=${project.id})}" class="btn btn-danger">Delete</a></td>
 		</tr>
 	</table>
