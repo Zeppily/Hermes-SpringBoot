@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import fi.geoffrey.hermes.domain.Project;
+import fi.geoffrey.hermes.domain.ProjectRepository;
 import fi.geoffrey.hermes.domain.User;
 import fi.geoffrey.hermes.domain.UserRepository;
 
@@ -25,6 +27,9 @@ public class UsersController {
 
 	@Autowired
 	private UserRepository uRepository;
+
+	@Autowired
+	private ProjectRepository pRepository;
 
 	// All users to the userlist.html page
 
@@ -79,6 +84,18 @@ public class UsersController {
 
 	@RequestMapping(value = "/admin/delete/{id}", method = RequestMethod.GET)
 	public String deleteUser(@PathVariable("id") Long userId, Model model) {
+		User user = uRepository.findById(userId).get();
+
+		for (Project project : user.getOwnedProjects()) {
+			if(project.getUsers().size() > 1) {
+				project.setProjectOwner(project.getUsers().iterator().next());
+			}
+			else {
+				pRepository.deleteById(project.getId());
+			}
+			
+		}
+
 		uRepository.deleteById(userId);
 		return "redirect:../userlist";
 	}
@@ -90,9 +107,9 @@ public class UsersController {
 		model.addAttribute("user", uRepository.findById(userId));
 		return "editUser";
 	}
-	
+
 	// Give admin role to a user
-	
+
 	@RequestMapping(value = "/admin/setAdmin/{id}")
 	public String setAdmin(@PathVariable("id") Long userId, Model mode) {
 		uRepository.findById(userId).get().setRole("ADMIN");
@@ -108,15 +125,15 @@ public class UsersController {
 	}
 
 	// User profile page
-	
-	@RequestMapping(value="/profile/{username}", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/profile/{username}", method = RequestMethod.GET)
 	public String showProfile(@PathVariable("username") String username, Model model, Authentication auth) {
 		User user = uRepository.findByUsername(username);
-		
-		if(auth.getName().equals(user.getUsername())) {
+
+		if (auth.getName().equals(user.getUsername())) {
 			model.addAttribute("user", user);
 			return "profile";
-		}else {
+		} else {
 			return "errorAccess";
 		}
 	}

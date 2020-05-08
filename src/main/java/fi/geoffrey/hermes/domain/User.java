@@ -23,6 +23,9 @@ import javax.validation.constraints.Size;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Represents a Person with User like credentials 2 Parametric constructors to
  * create a normal user and a superUser
@@ -39,12 +42,15 @@ public class User {
 			name = "user_project",
 			joinColumns = { @JoinColumn(name = "userid") },
 			inverseJoinColumns = { @JoinColumn(name = "projectid") })
+	@JsonBackReference
 	private Set<Project> projects = new HashSet<Project>(0);
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	@JsonIgnore
 	private List<Task> tasks;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "projectOwner")
+	@JsonIgnore
 	private List<Project> ownedProjects;
 	
 	@Id

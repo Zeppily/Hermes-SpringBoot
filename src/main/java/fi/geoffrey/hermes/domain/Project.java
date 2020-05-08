@@ -18,27 +18,32 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "project")
 public class Project {
-
-	@ManyToMany(mappedBy = "projects", fetch = FetchType.EAGER)
-	private Set<User> users;
-
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
-	private List<Task> tasks;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(optional = true)
-	@JoinColumn(name = "userId")
-	private User projectOwner;
-	
 	@NotNull
 	@Column(unique = true)
 	private String name;
+
+	@ManyToMany(mappedBy = "projects", fetch = FetchType.EAGER)
+	@JsonManagedReference
+	private Set<User> users;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
+	@JsonIgnore
+	private List<Task> tasks;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "userId")
+	private User projectOwner;
 
 	public Project() {
 
@@ -83,14 +88,10 @@ public class Project {
 
 	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
-	}	
+	}
 
 	public User getProjectOwner() {
 		return projectOwner;
-	}
-	
-	public String getProjectOwnerString() {
-		return this.projectOwner.getFirstName() + " " + this.projectOwner.getLastName();
 	}
 
 	public void setProjectOwner(User projectOwner) {

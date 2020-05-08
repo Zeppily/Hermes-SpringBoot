@@ -2,6 +2,7 @@ package fi.geoffrey.hermes;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,6 +27,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/index", "/registration", "/registration/**").permitAll()
 				.antMatchers("/css/**", "/js/**", "/webjars/**", "/images/**").permitAll()
 				.antMatchers("/admin","/admin/**").hasAuthority("ADMIN")
+				.antMatchers(HttpMethod.POST).permitAll()
+				.antMatchers(HttpMethod.PUT).permitAll()
+				.antMatchers(HttpMethod.DELETE).permitAll()
+				.antMatchers(HttpMethod.GET).permitAll()
+				.antMatchers(HttpMethod.PATCH).permitAll()
+				.antMatchers("/api/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
 			.formLogin()
@@ -35,6 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.logout()
 			.permitAll()
 			;
+		http.cors().and().csrf().disable();
 	}
 	
     @Autowired
