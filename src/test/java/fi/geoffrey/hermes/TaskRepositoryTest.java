@@ -24,60 +24,59 @@ import fi.geoffrey.hermes.domain.TaskRepository;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class TaskRepositoryTest {
-	
+
 	@Autowired
 	private TaskRepository repository;
-	
+
 	@Autowired
 	private ProjectRepository pRepository;
-	
+
 	@Test
 	public void createTask() {
 		Project project = new Project("Zippi's new workshop");
 		pRepository.save(project);
-		
+
 		Task task = new Task("Do work", 1, project);
 		repository.save(task);
-		
-		assertThat(task.getId()).isNotNull();	
+
+		assertThat(task.getId()).isNotNull();
 	}
-	
+
 	@Test
 	public void deleteTask() {
 		Project project = new Project("Zippi's new workshop");
 		pRepository.save(project);
-		
+
 		Task task = new Task("Do work", 1, project);
 		repository.save(task);
-		
+
 		repository.delete(task);
-		
-		assertThat(repository.findByDescription("Do work")).isNull();	
+
+		assertThat(repository.findByDescription("Do work")).isNull();
 	}
-	
+
 	@Test
 	public void findTaskByDescriptionShouldReturnTask() {
 		Project project = new Project("Zippi's new workshop");
 		pRepository.save(project);
-		
+
 		Task task = new Task("Do work", 1, project);
 		repository.save(task);
-		
-		assertThat(repository.findByDescription("Do work")).isNotNull();	
+
+		assertThat(repository.findByDescription("Do work")).isNotNull();
 	}
-	
+
 	@Test
 	public void findTaskByTaskIdShouldReturnTask() {
 		Project project = new Project("Zippi's new workshop");
 		pRepository.save(project);
-		
+
 		Task task = new Task("Do work", 1, project);
 		repository.save(task);
-		
+
 		long id = task.getId();
-		
+
 		assertThat(repository.findById(id).get().getDescription()).isEqualTo("Do work");
 	}
 
-	
 }
